@@ -5,7 +5,7 @@
 @Date               : 2020/7/23
 @Desc               : 
 @Last modified by   : Bao
-@Last modified date : 2020/7/24
+@Last modified date : 2020/7/25
 """
 
 import os
@@ -57,15 +57,15 @@ sess_config.gpu_options.allow_growth = True
 
 
 def save_outputs(predicted_ids, id_2_label, input_file, output_file):
-    src_inputs = []
+    golden_outputs = []
     for line in read_json_lines(input_file):
-        src_inputs.append(line['src'])
+        golden_outputs.append(line['tgt'])
 
     with open(output_file, 'w', encoding='utf-8') as fout:
-        for src, tgt in zip(src_inputs, predicted_ids):
+        for tgt, golden in zip(predicted_ids, golden_outputs):
             tgt[-1] = config.eos_id
             tgt = convert_list(tgt[:tgt.index(config.eos_id)], id_2_label, config.pad, config.unk)
-            print(json.dumps({'tgt': ' '.join(tgt), 'src': src}, ensure_ascii=False), file=fout)
+            print(json.dumps({'tgt': ' '.join(tgt), 'golden': golden}, ensure_ascii=False), file=fout)
 
 
 def run_test(sess, model, test_data):

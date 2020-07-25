@@ -4,7 +4,7 @@ python run.py \
 --model transformer \
 --do_train \
 --do_eval \
---epoch 5 \
+--epoch 10 \
 --batch 64 \
 --max_seq_length 256 \
 --optimizer custom \
